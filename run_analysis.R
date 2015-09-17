@@ -1,4 +1,4 @@
-## setwd("/home/dliu/Documents/Coursera/CleaningData/project")
+## setwd("~Documents/Coursera/CleaningData/project")
 data.dir <- "data"
 zip.file <- "getdata-projectfiles-UCI HAR Dataset.zip"
 dataset.dir <- "UCI HAR Dataset"
@@ -17,13 +17,13 @@ if (!file.exists(file.path(data.dir, zip.file))) {
 }
 list.files(data.dir)
 
-## Locd Features
+## Load Features
 featureFile <- "features.txt"
 features <- read.table(
 	file = file.path(data.dir, dataset.dir, featureFile), sep="")
 featureNames = features$V2
 
-## Locd Activity Labels
+## Load Activity Labels
 activityFile <- "activity_labels.txt"
 activities <- read.table(
 	file = file.path(data.dir, dataset.dir, activityFile), sep="")
@@ -83,15 +83,14 @@ write.table(all.set, "mergedDataset.txt", sep="\t", row.names = FALSE)
 
 ## Second Tidy Dataset:
 ## tidy data set with the average of each variable for each activity and each subject.
+## 'data.frame':   180 obs. of  68 variables:
 tidy.set <- aggregate(all.set, by=list(all.set$Subject, all.set$Activity), FUN=mean)
 tidy.set$Activity <- NULL
 tidy.set$Subject <- NULL
 names(tidy.set)[names(tidy.set) == 'Group.1'] <- 'Subject'
 names(tidy.set)[names(tidy.set) == 'Group.2'] <- 'Activity'
+names(tidy.set)[3:68] <- paste("avg-of-", names(tidy.set)[3:68], sep="")
 
 ## Save tidy data set as a txt file created with write.table() using row.name=FALSE
 write.table(tidy.set, "datasetWithAverage.txt", sep="\t", row.names = FALSE)
-
-
-
 
